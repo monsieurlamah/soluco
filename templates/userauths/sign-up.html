@@ -1,0 +1,94 @@
+{% extends 'partials/base.html' %}
+{% block title %}
+    <title>
+        Inscription - Soluco : La solution pour construire au pays
+    </title>
+    {% endblock title %}
+{% load static %}
+{% block content %}    
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'core-index' %}" rel="nofollow">Accueil</a>                    
+                    <span></span> Inscription
+                </div>
+            </div>
+        </div>
+        <section class="pt-150 pb-150">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-lg-6">
+                              
+                            <div class="login_wrap widget-taber-content p-30 background-white border-radius-5">
+                                    <div class="padding_eight_all bg-white">
+
+                                        
+                                  
+                                        {% if form.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>Il y a des erreurs dans le formulaire :</strong>
+                                            <ul>
+                                                {% for field, errors in form.errors.items %}
+                                                    {% for error in errors %}
+                                                        <li>{{ field }}: {{ error }}</li>
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        {% else %}
+                                        {% endif %}
+                                    
+                                            
+                                        <div class="heading_s1">
+                                            <h3 class="mb-30">Créer un compte</h3>
+                                        </div>                                     
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                {{form.username}}
+                                                <small class="text-danger">{{ form.username.errors }}</small>
+                                            </div>
+                                            <div class="form-group">
+                                                {{form.email}}
+                                                <small class="text-danger">{{ form.email.errors }}</small>
+                                            </div>
+                                           
+                                            <div class="form-group">
+                                                {{form.password1}}
+                                                <small class="text-danger"> {{ form.password1.errors }}</small>
+                                            </div>
+                                            <div class="form-group">
+                                                {{form.password2}}
+                                                <small class="text-danger">{{ form.password2.errors }}</small>
+                                            </div>
+                                            <div class="login_footer form-group">
+                                                <div class="chek-form">
+                                                    <div class="custome-checkbox">
+                                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox12" value="">
+                                                        <label class="form-check-label" for="exampleCheckbox12"><span>J'accepte les conditions  &amp; Politique.</span></label>
+                                                    </div>
+                                                </div>
+                                                <a href="privacy-policy.html"><i class="fi-rs-book-alt mr-5 text-muted"></i>Penchez-vous davantage</a>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">S'inscrire</button>
+                                            </div>
+                                        </form>                                        
+                                        <div class="text-muted text-center">Vous avez déjà un compte?<a href="{% url 'userauths-sign-in' %}">Connectez vous maintenant</a></div>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="col-lg-6">
+                               <img src="{% static 'assets/imgs/login.png' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>    
+{% endblock content %}
+    

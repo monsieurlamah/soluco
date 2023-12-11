@@ -1,0 +1,183 @@
+{% extends 'partials/base.html' %}
+{% block title %}
+    <title>
+        Tous les fournisseurs - Soluco : La solution pour construire au pays
+    </title>
+    {% endblock title %}
+{% load static %}
+{% load humanize %}
+{% block content %}     
+    <main class="main single-page">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>                    
+                    <span></span> About us
+                </div>
+            </div>
+        </div>
+        <section class="section-padding">
+            <div class="container pt-5">
+                <div class="row">
+                    <div class="col-lg-12 col-md-4">
+                        
+                            <div class="row">
+                                <div class="col-lg-12 col-mg-6"></div>
+                                <div class="col-lg-12 col-mg-6"></div>
+                            </div>
+                            <div class="col-lg-4 col-md-4"></div>
+                            <div class="col-lg-4 col-md-4 text-center">
+                                <div class="sidebar-widget widget_search mb-10">
+                                    <div class="search-form">
+                                        <form action="#">
+                                            <input type="text" placeholder="Search…">
+                                            <button type="submit"> <i class="fi-rs-search"></i> </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4"></div>
+                       
+                        <div class="shop-product-fillter">
+                            <div class="totall-product">
+                                <p>Nous avons <strong class="text-brand">{{vendors.count}}</strong> fournisseur{{vendors.count|pluralize}} maintenant !</p>
+                            </div>
+                            <div class="sort-by-product-area">
+                                <div class="sort-by-cover mr-10">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps"></i>Show:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">50</a></li>
+                                            <li><a href="#">100</a></li>
+                                            <li><a href="#">150</a></li>
+                                            <li><a href="#">200</a></li>
+                                            <li><a href="#">All</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="sort-by-cover">
+                                    <div class="sort-by-product-wrap">
+                                        <div class="sort-by">
+                                            <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                        </div>
+                                        <div class="sort-by-dropdown-wrap">
+                                            <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="sort-by-dropdown">
+                                        <ul>
+                                            <li><a class="active" href="#">Featured</a></li>
+                                            <li><a href="#">Price: Low to High</a></li>
+                                            <li><a href="#">Price: High to Low</a></li>
+                                            <li><a href="#">Release Date</a></li>
+                                            <li><a href="#">Avg. Rating</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>                
+        <section id="testimonials" class="section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 text-center">
+                     
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    
+                    {% for vendor in vendors %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
+                            <div class="hero-card-icon icon-left-2 hover-up" style="flex-wrap:wrap">
+                                <a href="{% url 'core-vendor-detail' vendor.vid %}">
+                                    <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted" src="{{vendor.image.url}}" style="width: 100px; height:100px; " alt="{{vendor.title}}">
+                                </a><br><br>
+                                <div class="pt-10">
+                                    <h4 class="font-sm  text-primary">{{vendor.vendor.count}} Produit{{vendor.vendor.count|pluralize}}</h4>
+                                </div>
+                            </div>
+                            <div class="pl-5">
+                                <h5 class="mb-5 fw-500">
+                                    <a href="{% url 'core-vendor-detail' vendor.vid %}">{{vendor.title}}</a>
+                                </h5>
+                                <p class="font-sm text-grey-5"><i class="fa fa-calendar"></i> <span>Depuis {{vendor.date|date:'Y'}}</span></p>
+                                <div class="text-grey-3">
+                                    <ul>
+                                        <li><i class="fa fa-map-marker"></i><small style="font-size: 13px;"> {{vendor.address}}</small></li>
+                                        <li><i class="fa fa-phone"></i><small style="font-size: 13px;"> {{vendor.contact}}</small></li>
+                                    </ul>
+                                </div>
+                                <p class="text-grey-3">{{vendor.description|truncatechars:70}}&nbsp;&nbsp;<a href="{% url 'core-vendor-detail' vendor.vid %}" style="color:#004080;"><u>Voir plus <i class="fa fa-long-arrow-right"></i></u></a></p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+            
+                </div>
+                <!--pagination-->
+                <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                            <li class="page-item"><a class="page-link" href="#">02</a></li>
+                            <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link" href="#">16</a></li>
+                            <li class="page-item"><a class="page-link" href="#"><i class="fi-rs-angle-double-small-right"></i></a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <!-- <div class="row mt-30">
+                    <div class="col-12 text-center">
+                        <p class="wow fadeIn animated">
+                            <a class="btn btn-brand text-white btn-shadow-brand hover-up btn-lg">Voir plus</a>
+                        </p>
+                    </div>
+                </div> -->
+            </div>
+        </section>
+        <!-- <section class="section-padding">
+            <div class="container pb-25">
+                <h3 class="section-title mb-20 wow fadeIn animated text-center"><span>Featured</span> Clients</h3>
+                <div class="carausel-6-columns-cover position-relative wow fadeIn animated">
+                    <div class="carausel-6-columns text-center" id="carausel-6-columns-3">
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-1.png' %}" alt="">
+                        </div>
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-2.png' %}" alt="">
+                        </div>
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-3.png' %}" alt="">
+                        </div>
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-4.png' %}" alt="">
+                        </div>
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-5.png' %}" alt="">
+                        </div>
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-6.png' %}" alt="">
+                        </div>
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="{% static 'assets/imgs/banner/brand-3.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+    </main>
+{% endblock content %}  
