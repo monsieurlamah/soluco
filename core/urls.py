@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from core import views
 
 urlpatterns = [
@@ -27,4 +27,35 @@ urlpatterns = [
     
     #filter
     path('filter-product/', views.filter_product, name="filter-product"),
+    
+    #Add-to-cart
+    path("add-to-cart/", views.add_to_cart, name="add-to-cart"),
+    
+    #Cart view
+    path("panier/", views.cart_view, name="core-cart"),
+    
+    #Delete item from cart
+    path("delete-from-cart/", views.delete_from_cart, name="delete-from-cart"),
+    
+    #Update item from cart
+    path("update-cart/", views.update_cart, name="update-cart"),
+    
+    #checkout
+    path('paiement/', views.checkout_view, name="core-checkout"),
+    
+    #paypal url
+    path('paypal/', include("paypal.standard.ipn.urls")),
+    
+    #payment completed
+    path('payment-completed/', views.payment_completed_view, name='core-payment-completed'),
+    
+    #payment failed
+    path('payment-failed/', views.payment_failed_view, name='core-payment-failed'),
+    
+    #dashboard
+    path('dashboard/', views.customer_dashboard, name="core-dashboard"),
+    
+    #order-detail
+    path('dashboard/commande/<int:id>', views.order_detail, name="core-order-detail"),
+    
 ]

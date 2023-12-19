@@ -6,7 +6,37 @@
     {% endblock title %}
 {% load static %}
 {% load humanize %}
-{% block content %}       
+{% block content %} 
+<head>
+    <!-- <style>
+        input[type="range"]{
+            -webkit-appearance: none;
+            margin-right: 15px;
+            height: 7px;
+            background:rgba(0, 0, 0, 0.6);
+            border-radius: 5px;
+            background-image: linear-gradient(#004080, #004080);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        }
+        input[type="range"]::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background:#004080;
+            cursor: ew-resize;
+            box-shadow: 0 0 2px 0 #555;
+            transition: background .3s ease-in-out;
+        }
+        input[type="range"]::-webkit-slider-runnable-track{
+            -webkit-appearance: none;
+            box-shadow: none;
+            border: none;
+            background: transparent;
+        }
+    </style>  -->
+</head>   
     <main class="main">
         <div class="page-header breadcrumb-wrap">
             <div class="container">
@@ -23,7 +53,7 @@
                     <div class="col-lg-9">
                         <div class="shop-product-fillter">
                             <div class="totall-product">
-                                <p> Nous avons trouvé <strong class="text-brand">{{products.count}}</strong> produits pour vous !</p>
+                                <p> Nous avons trouvé <strong class="text-brand">{{products.count}}</strong> produit{{products.count|pluralize}} pour le mot clé #{{tag.name}} !</p>
                             </div>
                             <div class="sort-by-product-area">
                                 <div class="sort-by-cover mr-10">
@@ -66,7 +96,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row product-grid-3">
+                        <div class="row product-grid-3" id="filtered-product">
                             
                             {% if products %}
                                 
@@ -101,11 +131,17 @@
                                                 </span>
                                             </div>
                                             <div class="product-price">
-                                                <span style="font-size: 14px;">{{product.price|intcomma}} GNF</span>
+                                                <span style="font-size: 14px;" class="current-product-price-{{product.id}}">{{product.price|intcomma}} </span><span>GNF</span>
                                                 <span class="old-price" style="font-size: 14px;">{{product.old_price|intcomma}} GNF</span>
                                             </div>
                                             <div class="product-action-1 show">
-                                                <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.php"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                <input type="hidden" value="1" id="product-quantity" class="product-quantity-{{product.id}}">
+                                                <input type="hidden" class="product-pid-{{product.id}}" value="{{product.pid}}">
+                                                <input type="hidden" class="product-image-{{product.id}}" value="{{product.image.url}}">
+                                                <input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}">
+                                                <input type="hidden" class="product-title-{{product.id}}" value="{{product.title}}">
+    
+                                                <button aria-label="Ajouter au panier" class="action-btn hover-up add-to-cart-btn" data-index="{{product.id}}" id="add-to-cart-btn"><i class="fi-rs-shopping-bag-add"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +152,7 @@
                       
                         </div>
                         <!--pagination-->
-                        <!-- <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                        <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-start">
                                     <li class="page-item active"><a class="page-link" href="#">01</a></li>
@@ -127,7 +163,7 @@
                                     <li class="page-item"><a class="page-link" href="#"><i class="fi-rs-angle-double-small-right"></i></a></li>
                                 </ul>
                             </nav>
-                        </div> -->
+                        </div>
                     </div>
                     <div class="col-lg-3 primary-sidebar sticky-sidebar">
                         <div class="row">
@@ -151,7 +187,21 @@
                                 <ul>
                                     
                                     {% for category in categories %}
-                                        <li class="cat-item cat-item-2"><a href="{% url 'core-category-product-list' category.cid %}">{{category.title}}</a> ({{category.category.count}})</li>
+                                    <li class="cat-item cat-item-2"><a href="{% url 'core-category-product-list' category.cid %}"><input class="form-check-input filter-checkbox" type="checkbox" name="checkbox" data-filter="category" id="exampleCheckbox1" value="{{category.id}}">&nbsp;{{category.title}}</a> ({{category.category.count}})</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                         <!--Widget categories-->
+                         <div class="sidebar-widget widget_categories widget-category mb-40">
+                            <div class="widget-header position-relative mb-20 pb-10">
+                                <h5 class="widget-title">Fournisseur</h5>
+                            </div>
+                            <div class="post-block-list post-module-1 post-module-5">
+                                <ul>
+                                    
+                                    {% for vendor in vendors %}
+                                    <li class="cat-item cat-item-2"><a href="{% url 'core-vendor-detail' vendor.vid %}"><input class="form-check-input filter-checkbox" type="checkbox" name="checkbox" data-filter="vendor" id="exampleCheckbox2" value="{{vendor.id}}">&nbsp;{{vendor.title}}</a> ({{vendor.product.count}})</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -171,46 +221,29 @@
                         <!-- Fillter By Price -->
                         <div class="sidebar-widget price_range range mb-30">
                             <div class="widget-header position-relative mb-20 pb-10">
-                                <h5 class="widget-title mb-10">Fill by price</h5>
+                                <h5 class="widget-title mb-10">Filtrer par prix</h5>
                                 <div class="bt-1 border-color-1"></div>
                             </div>
                             <div class="price-filter">
                                 <div class="price-filter-inner">
-                                    <div id="slider-range"></div>
+                                    <!-- <div id="slider-range"></div> -->
                                     <div class="price_slider_amount">
                                         <div class="label-input">
-                                            <span>Range:</span><input type="text" id="amount" name="price" placeholder="Add Your Price">
+                                            <span>Gamme:</span><input value="{{min_max_price.price__min}}" class="slider-range" type="range" id="range" name="range" placeholder="Add Your Price" min="{{min_max_price.price__min}}" max="{{min_max_price.price__max}}" oninput="max_price.value=this.value"> 
+                                            <div class="caption">À partir de : <strong id="slider-ranger-value1" class="text-brand">{{min_max_price.price__min|intcomma}} GNF</strong></div>
+                                            <div class="caption">À : <strong id="slider-ranger-value2" class="text-brand">{{min_max_price.price__max|intcomma}} GNF</strong></div>
                                         </div>
                                     </div>
+                                    <input value="{{min_max_price.price__min}}" type="number" id="max_price" min="{{min_max_price.price__min}}" max="{{min_max_price.price__max}}" placeholder="Prix ​​actuel" onkeyup="range.value=this.value">
                                 </div>
                             </div>
                             <div class="list-group">
                                 <div class="list-group-item mb-10 mt-10">
-                                    <label class="fw-900">Color</label>
-                                    <div class="custome-checkbox">
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
-                                        <label class="form-check-label" for="exampleCheckbox1"><span>Red (56)</span></label>
-                                        <br>
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox2" value="">
-                                        <label class="form-check-label" for="exampleCheckbox2"><span>Green (78)</span></label>
-                                        <br>
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox3" value="">
-                                        <label class="form-check-label" for="exampleCheckbox3"><span>Blue (54)</span></label>
-                                    </div>
-                                    <label class="fw-900 mt-15">Item Condition</label>
-                                    <div class="custome-checkbox">
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="">
-                                        <label class="form-check-label" for="exampleCheckbox11"><span>New (1506)</span></label>
-                                        <br>
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox21" value="">
-                                        <label class="form-check-label" for="exampleCheckbox21"><span>Refurbished (27)</span></label>
-                                        <br>
-                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox31" value="">
-                                        <label class="form-check-label" for="exampleCheckbox31"><span>Used (45)</span></label>
-                                    </div>
+                               
+                                   
                                 </div>
                             </div>
-                            <a href="shop.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
+                            <button class="btn btn-sm btn-default" type="button" id="price-filter-btn"><i class="fi-rs-filter mr-5"></i> Filtrer</button>
                         </div>
                         <!-- Product sidebar Widget -->
                         <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">

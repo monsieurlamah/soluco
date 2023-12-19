@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'taggit',
     'ckeditor',
     
+    #paypal
+    'paypal.standard.ipn',
+    
     
     #CUSTOME APP
     'core',
@@ -145,6 +148,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = "userauths-sign-in"
+
 AUTH_USER_MODEL = "userauths.user"
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
@@ -177,3 +182,6 @@ JAZZMIN_SETTINGS = {
     
     # "site_logo": "",
 }
+
+PAYPAL_RECEIVER_EMAIL = 'businessdestiny@gmail.com'
+PAYPAL_TEST = True
