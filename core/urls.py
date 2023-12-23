@@ -58,4 +58,25 @@ urlpatterns = [
     #order-detail
     path('dashboard/commande/<int:id>', views.order_detail, name="core-order-detail"),
     
+    #make-default-address
+    path('make-default-address/', views.make_address_default, name="make-default-address"),
+    
+    #wishlist
+    path('wishlist/', views.wishlistPage, name="core-wishlist"),
+    
+    #adding wishlist
+    path('add-to-wishlist/', views.add_to_wishlist, name="add-to-wishlist"),
+    
+    #removing wishlist
+    path('remove-from-wishlist/', views.remove_wishlist, name="remove-from-wishlist"),
+    
+    #===============OTHERS PAGES================
+    #contact
+    path('contact/', views.contact, name="core-contact"),
+    path('ajax-contact-form/', views.ajax_contact_form, name="ajax-contact-form"),
+    path('a-propos/', views.about_us, name="core-about"),
+    path('guide/', views.purchase_guide, name="core-guide"),
+    path('politique-de-confidentialite/', views.privacy_policy, name="core-policy"),
+    path('conditions-utilisation/', views.terms_of_service, name="core-condition"),
+    
 ]

@@ -1,0 +1,109 @@
+{% extends 'partials/base.html' %}
+{% block title %}
+<title>
+    Tableau de bord {{vendor.title}}- Soluco : La solution pour construire au pays
+</title>
+{% endblock title %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'core-index' %}" rel="nofollow">Accueil</a>
+                <span></span> Tableau de bord
+            </div>
+        </div>
+    </div>
+    <section class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile"
+                                            role="tab" aria-controls="profile" aria-selected="false"><i
+                                                class="fi-rs-user mr-10"></i>Profil</a>
+                                    </li>
+                                   
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal"><i
+                                                class="fi-rs-sign-out mr-10"></i>Se déconnecter</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="tab-content dashboard-content">
+                                <div class="tab-pane fade active show" id="profile" role="tabpanel"
+                                    aria-labelledby="profile-tab">
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger mb-4">
+                                        <strong>Il y a des erreurs dans le formulaire :</strong>
+                                        <ul>
+                                            {% for field, errors in form.errors.items %}
+                                                {% for error in errors %}
+                                                    <li>{{ field }}: {{ error }}</li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% else %}
+                                    {% endif %}
+                                    <div class="card">
+                                       
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Modification du Profil </h5>
+                                        </div>
+                                       
+                                        <div class="card-body row" style="display: flex; align-items: center; gap: 10px;">
+                                            <div class="col-md-4">
+                                                {% if profile.image %}
+                                                    <p><span><img src="{{profile.image.url}}" style="height: 150px; width:150px;  border-radius:50%;" alt="{{profile.full_name}}"></span></p>
+                                                {% else %}
+                                                    <p><span><img src="{% static 'assets/imgs/page/default.png' %}" style="height: 150px; width:150px;  border-radius:50%;" alt="{{profile.full_name}}"></span></p>
+                                                {% endif %}
+                                            </div>
+                                            <div  class="col-md-8" style="width: 100%;">
+                                               
+                                               <form action="" method="POST" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <p>{{form.image}}</p>
+                                                <small class="text-danger">{{ form.image.errors }}</small>
+
+                                                <p>{{form.full_name}}</p>
+                                                <small class="text-danger">{{ form.full_name.errors }}</small>
+
+                                                <p>{{form.bio}}</p>
+                                                <small class="text-danger">{{ form.bio.errors }}</small>
+
+                                                <p>{{form.phone}}</p>
+                                                <small class="text-danger">{{ form.phone.errors }}</small>
+
+                                                <div class="mt-5">
+                                                    <button class="btn btn-sm" type="submit">Save Changes</button>
+                                                </div>
+                                               </form>
+                                            </div>
+                                        </div>
+                                       
+
+
+                                    </div>
+                       
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+
+{% endblock content %}

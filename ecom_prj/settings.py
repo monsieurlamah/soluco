@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     #CUSTOME APP
     'core',
     'userauths',
+    'prefinancement',
 ]
 
 MIDDLEWARE = [
@@ -178,6 +179,8 @@ JAZZMIN_SETTINGS = {
 
     
     "site_brand": "Soluco",
+    
+    "welcome_sign": "Bienvenu chez Soluco",
 
     
     # "site_logo": "",

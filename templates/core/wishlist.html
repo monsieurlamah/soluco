@@ -1,0 +1,96 @@
+{% extends 'partials/base.html' %}
+{% block title %}
+    <title>
+        Liste des voeux - Soluco : La solution pour construire au pays
+    </title>
+    {% endblock title %}
+{% load static %}
+{% load humanize %}
+{% block content %}        
+    <main class="main" id="wishlist-list">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'core-index' %}" rel="nofollow">Accueil</a>
+                    <span></span> Produit
+                    <span></span> Wishlist
+                </div>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <div class="totall-product">
+                                <p> Vous avez <strong class="text-brand">{{wishlists.count}}</strong> produit{{wishlists.count|pluralize}} dans votre liste</p>
+                            </div>
+                            <table class="table shopping-summery text-center clean">
+                                <thead>
+                                    <tr class="main-heading">
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Nom</th>
+                                        <th scope="col">Prix</th>
+                                        <th scope="col">Statut</th>
+                                        <th scope="col">Action</th>
+                                        <th scope="col">Retirer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for  wishlist in wishlists %}
+                                        
+                                    <tr>
+                                        <td class="image product-thumbnail"><img src="{{wishlist.product.image.url}}" alt="#"></td>
+                                        <td class="product-des product-name">
+                                            <h5 class="product-name"><a href="{% url 'core-product-detail' wishlist.product.pid %}">{{wishlist.product.title}}</a></h5>
+                                            <!-- <p class="font-xs">Maboriosam in a tonto nesciung eget<br> distingy magndapibus.
+                                            </p> -->
+                                        </td>
+                                        <td class="price" data-title="Price">
+                                            <span class="current-product-price-{{wishlist.product.id}}">{{wishlist.product.price|intcomma}} </span>
+                                            <span>GNF</span>
+                                        </td>
+
+                                        <td class="text-center" data-title="Stock">
+                                            
+                                                
+                                                {% if wishlist.product.in_stock %}   
+                                                    <span class="text-success">En stock</span>
+                                                {% else %}  
+                                                    <span class="text-danger">Out of Stock</span>
+                                                {% endif %}
+                                                    
+                                          
+                                        </td>
+                                      
+                                       <td class="action text-center" data-title="Cart">
+                                            <input type="hidden" value="1" id="product-quantity" class="product-quantity-{{wishlist.product.id}}">
+                                            <input type="hidden" class="product-pid-{{wishlist.product.id}}" value="{{wishlist.product.pid}}">
+                                            <input type="hidden" class="product-image-{{wishlist.product.id}}" value="{{wishlist.product.image.url}}">
+                                            <input type="hidden" class="product-id-{{wishlist.product.id}}" value="{{wishlist.product.id}}">
+                                            <input type="hidden" class="product-title-{{wishlist.product.id}}" value="{{wishlist.product.title}}">
+                                            <button class="btn btn-sm add-to-cart-btn" data-index="{{wishlist.product.id}}">Ajouter au panier</button>
+                                       </td>
+                
+                                        <td class="action" data-title="Retirer"><button style="border: none; background:none;" class="text-muted delete-wishlist-product" data-wishlist-product="{{ wishlist.id }}"><i class="fi-rs-trash"></i></button></td>
+                                    </tr>
+                                    {% empty %}
+                                      <tr>
+                                        <td class="text-center">
+                                           
+                                                <p>Rien dans la liste de souhaits pour l'instant...</p>
+                                             
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}  

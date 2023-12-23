@@ -226,7 +226,122 @@ $(document).ready(function () {
         })
 
     })
+
+    // Making Defaut Address
+    $(document).on("click", ".make-default-address", function () {
+        let id = $(this).attr("data-address-id")
+        let this_val = $(this)
+
+        console.log("ID est:", id);
+        console.log("Element est:", this_val);
+
+        $.ajax({
+            url: "/make-default-address",
+            data: {
+                "id": id,
+            },
+            dataType: "json",
+            success: function (response) {
+                console.log("Adresse par défaut...");
+                if (response.boolean == true) {
+                    $(".check").hide()
+                    $(".action_btn").show()
+
+                    $(".check" + id).show()
+                    $(".button" + id).hide()
+                }
+            }
+        })
+    })
+
+    //adding to wishlist
+    $(document).on("click", ".add-to-wishlist", function () {
+        let product_id = $(this).attr("data-product-item")
+        let this_val = $(this)
+
+        console.log("ID du produit est: ", product_id);
+
+        $.ajax({
+            url: "/add-to-wishlist",
+            data: {
+                "id": product_id
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                console.log("Adding to wishlist...");
+            },
+            success: function (response) {
+                this_val.html("✔")
+                if (response.bool === true) {
+                    console.log("Added to wishlist...");
+                }
+            }
+        })
+    })
+
+    //remove from wishlist
+    $(document).on("click", ".delete-wishlist-product", function () {
+        let wishlist_id = $(this).attr("data-wishlist-product")
+        let this_val = $(this)
+
+        console.log("Wishlist ID est: ", wishlist_id);
+
+        $.ajax({
+            url: "/remove-from-wishlist",
+            data: {
+                "id": wishlist_id,
+            },
+            dataType: "json",
+            beforeSend: function () {
+                console.log("Deleting product from wishlist...");
+            },
+            success: function (response) {
+                $("#wishlist-list").html(response.data)
+            }
+        })
+    })
+
+    $(document).on('submit', "#contact-form-ajax", function (e) {
+        e.preventDefault()
+        console.log("submited...");
+
+        let full_name = $("#full_name").val();
+        let email = $("#email").val();
+        let phone = $("#phone").val();
+        let subject = $("#subject").val();
+        let message = $("#message").val();
+
+        console.log("Nom complet: ", full_name);
+        console.log("Email: ", email);
+        console.log("Téléphone: ", phone);
+        console.log("Message: ", message);
+
+        $.ajax({
+            url: '/ajax-contact-form',
+            data: {
+                'full_name': full_name,
+                'email': email,
+                'phone': phone,
+                'subject': subject,
+                'message': message,
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                console.log("Sending Data to Server...");
+            },
+            success: function (res) {
+                console.log("Sent Data to server !");
+                $("#contact_us_p").hide()
+                $("#contact-form-ajax").hide()
+                $("#message-response").html("Message sent successfully !")
+            }
+        })
+
+    })
+
 })
+
+
 
 
 

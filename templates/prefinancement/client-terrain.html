@@ -1,0 +1,161 @@
+{% extends 'partials/base.html' %}
+{% block title %}
+<title>
+    Tableau de bord {{vendor.title}}- Soluco : La solution pour construire au pays
+</title>
+{% endblock title %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'core-index' %}" rel="nofollow">Accueil</a>
+                <span></span> Tableau de bord
+            </div>
+        </div>
+    </div>
+    <section class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="dashboard-menu">
+                                <ul class="nav flex-column" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile"
+                                            role="tab" aria-controls="profile" aria-selected="false"><i
+                                                class="fi-rs-money mr-10"></i>Prefinancement</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal"><i
+                                                class="fi-rs-sign-out mr-10"></i>Se déconnecter</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="tab-content dashboard-content">
+                                <div class="tab-pane fade active show" id="profile" role="tabpanel"
+                                    aria-labelledby="profile-tab">
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger mb-4">
+                                        <strong>Il y a des erreurs dans le formulaire :</strong>
+                                        <ul>
+                                            {% for field, errors in form.errors.items %}
+                                            {% for error in errors %}
+                                            <li>{{ field }}: {{ error }}</li>
+                                            {% endfor %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% else %}
+                                    {% endif %}
+                                    <div class="card">
+
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Formulaire du Prefinancement de Terrain </h5>
+                                        </div>
+
+                                        <div class="card-body row"
+                                            style="display: flex; align-items: center; gap: 10px;">
+                                            <!-- <div class="col-md-4">
+                                                {% if profile.image %}
+                                                <p><span><img src="{{profile.image.url}}"
+                                                            style="height: 150px; width:150px;  border-radius:50%;"
+                                                            alt="{{profile.full_name}}"></span></p>
+                                                {% else %}
+                                                <p><span><img src="{% static 'assets/imgs/page/default.png' %}"
+                                                            style="height: 150px; width:150px;  border-radius:50%;"
+                                                            alt="{{profile.full_name}}"></span></p>
+                                                {% endif %}
+                                            </div> -->
+                                            <div class="col-md-12" style="width: 100%;">
+
+
+                                                <form action="" method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+
+                                                    <label for="fName">Votre phone</label>
+                                                    <p>{{form_terrain.image}}</p>
+                                                    <small class="text-danger">{{ form_terrain.image.errors }}</small>
+
+
+
+                                                    <label for="fName">Nom complet</label>
+                                                    <p>{{form_terrain.full_name}}</p>
+                                                    <small class="text-danger">{{ form_terrain.full_name.errors}}</small>
+
+                                                    <label for="fName">Téléphone</label>
+                                                    <p>{{form_terrain.mobile}}</p>
+                                                    <small class="text-danger">{{ form_terrain.mobile.errors }}</small>
+
+
+                                                    <label for="fName">Pays</label>
+                                                    <p>{{form_terrain.country}}</p>
+                                                    <small class="text-danger">{{ form_terrain.country.errors }}</small>
+
+                                                    <label for="fName">État</label>
+                                                    <p>{{form_terrain.state}}</p>
+                                                    <small class="text-danger">{{ form_terrain.state.errors }}</small>
+
+                                                    <label for="fName">Ville</label>
+                                                    <p>{{form_terrain.city}}</p>
+                                                    <small class="text-danger">{{ form_terrain.city.errors }}</small>
+
+                                                    <label for="fName">Fax</label>
+                                                    <p>{{form_terrain.fax}}</p>
+                                                    <small class="text-danger">{{ form_terrain.fax.errors }}</small>
+
+                                                    <label for="fName">Date de naissance</label>
+                                                    <p>{{form_terrain.date_of_birth}}</p>
+                                                    <small class="text-danger">{{ form_terrain.date_of_birth.errors}}</small>
+
+                                                    <label for="fName">Genre</label>
+                                                    <p>{{form_terrain.gender}}</p>
+                                                    <small class="text-danger">{{ form_terrain.gender.errors }}</small>
+
+                                                    <label for="fName">Situation Matrimoniale</label>
+                                                    <p>{{form_terrain.marrital_status}}</p>
+                                                    <small class="text-danger">{{ form_terrain.marrital_status.errors}}</small>
+
+                                                    <label for="fName">Type d'identité</label>
+                                                    <p>{{form_terrain.identity_type}}</p>
+                                                    <small class="text-danger">{{ form_terrain.identity_type.errors}}</small>
+
+                                                    <label for="fName">Sélectionnez une image d'identité</label>
+                                                    <p>{{form_terrain.identity_image}}</p>
+                                                    <small class="text-danger">{{ form_terrain.identity_type.errors}}</small>
+
+                                                    <label for="fName">Sélectionnez l'image de signature</label>
+                                                    <p>{{form_terrain.signature}}</p>
+                                                    <small class="text-danger">{{ form_terrain.signature.errors}}</small>
+
+
+                                                    <div class="mt-5">
+                                                        <button class="btn btn-sm" type="submit">Sauvegarder</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+</main>
+
+
+
+{% endblock content %}

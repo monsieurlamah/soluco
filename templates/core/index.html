@@ -150,12 +150,12 @@
                                         <a href="shop.html">{{product.category.title}}</a>
                                     </div>
                                     <h2><a href="{% url 'core-product-detail' product.pid %}">{{product.title}}</a></h2>
-                                    <div class="rating-result" title="90%">
+                                    <!-- <div class="rating-result" title="90%">
                                         <span>
                                             <span>80%</span>
                                         </span>
-                                    </div>
-                                    <div class="product-price">
+                                    </div> -->
+                                    <div class="product-price mb-50">
                                         <span style="font-size: 14px;"
                                             class="current-product-price-{{product.id}}">{{product.price | intcomma}}
                                         </span><span>GNF</span>
@@ -171,10 +171,12 @@
                                         <input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}">
                                         <input type="hidden" class="product-title-{{product.id}}"
                                             value="{{product.title}}">
-
-                                        <button aria-label="Ajouter au panier"
+                                        <div class="text-center"> 
+                                            <button aria-label="Ajouter au panier"
                                             class="action-btn hover-up add-to-cart-btn" data-index="{{product.id}}"
                                             id="add-to-cart-btn"><i class="fi-rs-shopping-bag-add"></i></button>
+                                            <button aria-label="Ajouter à la liste" class="action-btn hover-up add-to-wishlist" data-product-item="{{product.id}}"><i class="fi-rs-heart" style="fill: blue;"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -217,19 +219,33 @@
                                         <a href="shop.html">{{product.category.title}}</a>
                                     </div>
                                     <h2><a href="{% url 'core-product-detail' product.pid %}">{{product.title}}</a></h2>
-                                    <div class="rating-result" title="90%">
+                                    <!-- <div class="rating-result" title="90%">
                                         <span>
-                                            <span>70%</span>
+                                            <span>80%</span>
                                         </span>
-                                    </div>
-                                    <div class="product-price">
-                                        <span style="font-size: 14px;">{{product.price | intcomma}} GNF </span>
+                                    </div> -->
+                                    <div class="product-price mb-50">
+                                        <span style="font-size: 14px;"
+                                            class="current-product-price-{{product.id}}">{{product.price | intcomma}}
+                                        </span><span>GNF</span>
                                         <span class="old-price" style="font-size: 14px;">{{product.old_price|intcomma}}
                                             GNF</span>
                                     </div>
                                     <div class="product-action-1 show">
-                                        <a aria-label="Add To Cart" class="action-btn hover-up" href="cart.html"><i
-                                                class="fi-rs-shopping-bag-add"></i></a>
+                                        <input type="hidden" value="1" id="product-quantity"
+                                            class="product-quantity-{{product.id}}">
+                                        <input type="hidden" class="product-pid-{{product.id}}" value="{{product.pid}}">
+                                        <input type="hidden" class="product-image-{{product.id}}"
+                                            value="{{product.image.url}}">
+                                        <input type="hidden" class="product-id-{{product.id}}" value="{{product.id}}">
+                                        <input type="hidden" class="product-title-{{product.id}}"
+                                            value="{{product.title}}">
+                                        <div class="text-center"> 
+                                            <button aria-label="Ajouter au panier"
+                                            class="action-btn hover-up add-to-cart-btn" data-index="{{product.id}}"
+                                            id="add-to-cart-btn"><i class="fi-rs-shopping-bag-add"></i></button>
+                                            <button aria-label="Ajouter à la liste" class="action-btn hover-up add-to-wishlist" data-product-item="{{product.id}}"><i class="fi-rs-heart" style="fill: blue;"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -266,9 +282,10 @@
                     {% for category in categories %}
                     <div class="card-1">
                         <figure class=" img-hover-scale overflow-hidden">
-                            <a href="shop.html"><img src="{{category.image.url}}" alt="{{category.title}}"></a>
+                            <a href="{% url 'core-category-product-list' category.cid %}"><img src="{{category.image.url}}" alt="{{category.title}}"></a>
                         </figure>
-                        <h5><a href="shop.html">{{category.title}}</a></h5>
+                        <h5><a href="{% url 'core-category-product-list' category.cid %}">{{category.title}}</a></h5>
+                        <p>{{category.category.count}} Produit{{category.category.count|pluralize}}</p>
                     </div>
                     {% endfor %}
 
@@ -285,7 +302,7 @@
                         <div class="banner-text">
                             <span>Smart Offer</span>
                             <h4>Save 20% on <br>Woman Bag</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                            <a href="{% url 'core-product-list' %}">Shop Now <i class="fi-rs-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -295,7 +312,7 @@
                         <div class="banner-text">
                             <span>Sale off</span>
                             <h4>Great Summer <br>Collection</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                            <a href="{% url 'core-product-list' %}">Shop Now <i class="fi-rs-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -305,7 +322,7 @@
                         <div class="banner-text">
                             <span>New Arrivals</span>
                             <h4>Shop Today’s <br>Deals & Offers</h4>
-                            <a href="shop.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                            <a href="{% url 'core-product-list' %}">Shop Now <i class="fi-rs-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -345,10 +362,10 @@
                         </div>
                         <div class="product-content-wrap">
                             <h2><a href="{% url 'core-product-detail' product.pid %}">{{product.title}}</a></h2>
-                            <div class="rating-result" title="90%">
+                            <!-- <div class="rating-result" title="90%">
                                 <span>
                                 </span>
-                            </div>
+                            </div> -->
                             <div class="product-price">
                                 <span style="font-size: 14px;">{{product.price|intcomma}} GNF</span>
                                 <span class="old-price" style="font-size: 14px;">{{product.old_price|intcomma}}
